@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { result } from 'lodash';
 
 const getButtonClass = (icon, enabled) => classnames(`btn-action fa ${icon}`, { disable: !enabled });
 
@@ -9,6 +10,7 @@ function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall })
   const localVideo = useRef(null);
   const [video, setVideo] = useState(config.video);
   const [audio, setAudio] = useState(config.audio);
+  const [pip, setPip] = useState(false);
 
   useEffect(() => {
     if (peerVideo.current && peerSrc) peerVideo.current.srcObject = peerSrc;
@@ -38,7 +40,17 @@ function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall })
   };
 
   const togglePIP = () => {
-    peerVideo.requestPictureInPicture()
+    // if (!pip) {
+    //   console.log('pip!');
+    //   peerVideo.current.requestPictureInPicture().catch((err) => {
+    //     console.log(err);
+    //   });
+    // } else {
+    //   console.log('exit pip!');
+    //   document.exitPictureInPicture();
+    // }
+    // setPip(!pip);
+    peerVideo.current.requestPictureInPicture()
   };
 
   return (
