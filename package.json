@@ -49,8 +49,8 @@
     "webpack-dev-server": "3.11.2"
   },
   "engines": {
-    "node": "14.17.0",
-    "yarn": "1.22.10"
+    "node": "14.17.2",
+    "yarn": "1.22.11"
   },
   "repository": {
     "type": "git",
