@@ -37,6 +37,10 @@ function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall })
     }
   };
 
+  const togglePIP = () => {
+    peerVideo.requestPictureInPicture()
+  };
+
   return (
     <div className={classnames('call-window', status)}>
       <video id="peerVideo" ref={peerVideo} autoPlay />
@@ -47,6 +51,12 @@ function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall })
           type="button"
           className={getButtonClass('fa-video-camera', video)}
           onClick={() => toggleMediaDevice('video')}
+        />
+        <button
+          key="btnPIP"
+          type="button"
+          className={getButtonClass('fa-picture-o', video)}
+          onClick={() => togglePIP()}
         />
         <button
           key="btnAudio"
