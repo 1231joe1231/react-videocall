@@ -1,16 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { result } from 'lodash';
+import Draggable from 'react-draggable';
+// import { result } from 'lodash';
 
 const getButtonClass = (icon, enabled) => classnames(`btn-action fa ${icon}`, { disable: !enabled });
-
-function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall }) {
+let pos = null;
+function CallWindow({
+  peerSrc,
+  localSrc,
+  config,
+  mediaDevice,
+  status,
+  endCall
+}) {
   const peerVideo = useRef(null);
   const localVideo = useRef(null);
   const [video, setVideo] = useState(config.video);
   const [audio, setAudio] = useState(config.audio);
-  const [pip, setPip] = useState(false);
+  const [expand, setExpand] = useState(false);
 
   useEffect(() => {
     if (peerVideo.current && peerSrc) peerVideo.current.srcObject = peerSrc;
@@ -50,13 +58,26 @@ function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall })
     //   document.exitPictureInPicture();
     // }
     // setPip(!pip);
-    peerVideo.current.requestPictureInPicture()
+    peerVideo.current.requestPictureInPicture();
   };
 
   return (
     <div className={classnames('call-window', status)}>
       <video id="peerVideo" ref={peerVideo} autoPlay />
-      <video id="localVideo" ref={localVideo} autoPlay muted />
+      <Draggable bounds="parent" key={expand}>
+        <video
+          id="localVideo"
+          ref={localVideo}
+          autoPlay
+          muted
+          style={{
+            bottom: 0,
+            left: 0,
+            width: expand ? '100%' : '20%',
+            height: expand ? '100%' : '20%'
+          }}
+        />
+      </Draggable>
       <div className="video-control">
         <button
           key="btnVideo"
@@ -69,6 +90,14 @@ function CallWindow({ peerSrc, localSrc, config, mediaDevice, status, endCall })
           type="button"
           className={getButtonClass('fa-picture-o', video)}
           onClick={() => togglePIP()}
+        />
+        <button
+          key="btnPIP"
+          type="button"
+          className={getButtonClass('fa-expand', video)}
+          onClick={() => {
+            setExpand(!expand);
+          }}
         />
         <button
           key="btnAudio"
