@@ -2,7 +2,15 @@ import MediaDevice from './MediaDevice';
 import Emitter from './Emitter';
 import socket from './socket';
 
-const PC_CONFIG = { iceServers: [{ urls: ['stun:stun.xten.com'] }] };
+const PC_CONFIG = { iceServers: [
+    {
+      urls: ["turn:1.116.123.171:3478?transport=udp","turn:1.116.123.171:3478?transport=tcp"]
+      username:"joe",
+      credential:"listen"
+    },{ 
+      urls: ['stun:1.116.123.171:3478'] 
+    }
+  ]};
 
 class PeerConnection extends Emitter {
   /**
