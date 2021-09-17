@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Background from "smart-background";
 import PropTypes from "prop-types";
 
@@ -36,6 +36,10 @@ function MainWindow({ startCall, clientId }) {
     // console.log(event.target.checked);
     localStorage.setItem("USETURN", event.target.checked);
   };
+
+  // useEffect(() => {
+  //   localStorage.setItem("USETURN", false);
+  // });
 
   return (
     <Background

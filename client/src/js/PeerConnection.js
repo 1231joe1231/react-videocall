@@ -22,7 +22,8 @@ class PeerConnection extends Emitter {
   constructor(friendID) {
     super();
     const useTurn = localStorage.getItem("USETURN");
-    const config = useTurn ? PC_CONFIG_TURN : PC_CONFIG;
+    const config = useTurn ? PC_CONFIG : PC_CONFIG_TURN;
+    console.log(config);
     this.pc = new RTCPeerConnection(config);
     this.pc.onicecandidate = (event) => socket.emit('call', {
       to: this.friendID,

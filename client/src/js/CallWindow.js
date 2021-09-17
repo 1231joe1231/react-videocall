@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import Draggable from 'react-draggable';
+import React, { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+import classnames from "classnames";
+import Draggable from "react-draggable";
 // import { result } from 'lodash';
 
-const getButtonClass = (icon, enabled) => classnames(`btn-action fa ${icon}`, { disable: !enabled });
+const getButtonClass = (icon, enabled) =>
+  classnames(`btn-action fa ${icon}`, { disable: !enabled });
 // const pos = null;
 function CallWindow({
   peerSrc,
@@ -26,9 +27,10 @@ function CallWindow({
   });
 
   useEffect(() => {
+    console.log(mediaDevice);
     if (mediaDevice) {
-      mediaDevice.toggle('Video', video);
-      mediaDevice.toggle('Audio', audio);
+      mediaDevice.toggle("Video", video);
+      mediaDevice.toggle("Audio", audio);
     }
   });
 
@@ -37,13 +39,13 @@ function CallWindow({
    * @param {String} deviceType - Type of the device eg: Video, Audio
    */
   const toggleMediaDevice = (deviceType) => {
-    if (deviceType === 'video') {
+    if (deviceType === "video") {
       setVideo(!video);
-      mediaDevice.toggle('Video');
+      mediaDevice.toggle("Video");
     }
-    if (deviceType === 'audio') {
+    if (deviceType === "audio") {
       setAudio(!audio);
-      mediaDevice.toggle('Audio');
+      mediaDevice.toggle("Audio");
     }
   };
 
@@ -62,7 +64,7 @@ function CallWindow({
   };
 
   return (
-    <div className={classnames('call-window', status)}>
+    <div className={classnames("call-window", status)}>
       <video id="peerVideo" ref={peerVideo} autoPlay />
       <Draggable bounds="parent" key={expand}>
         <video
@@ -73,8 +75,8 @@ function CallWindow({
           style={{
             bottom: 0,
             left: 0,
-            width: expand ? '100%' : '20%',
-            height: expand ? '100%' : '20%',
+            width: expand ? "100%" : "20%",
+            height: expand ? "100%" : "20%",
           }}
         />
       </Draggable>
@@ -82,19 +84,19 @@ function CallWindow({
         <button
           key="btnVideo"
           type="button"
-          className={getButtonClass('fa-video-camera', video)}
-          onClick={() => toggleMediaDevice('video')}
+          className={getButtonClass("fa-video-camera", video)}
+          onClick={() => toggleMediaDevice("video")}
         />
         <button
           key="btnPIP"
           type="button"
-          className={getButtonClass('fa-picture-o', video)}
+          className={getButtonClass("fa-picture-o", video)}
           onClick={() => togglePIP()}
         />
         <button
-          key="btnPIP"
+          key="btnExpand"
           type="button"
-          className={getButtonClass('fa-expand', video)}
+          className={getButtonClass("fa-expand", video)}
           onClick={() => {
             setExpand(!expand);
           }}
@@ -102,8 +104,8 @@ function CallWindow({
         <button
           key="btnAudio"
           type="button"
-          className={getButtonClass('fa-microphone', audio)}
-          onClick={() => toggleMediaDevice('audio')}
+          className={getButtonClass("fa-microphone", audio)}
+          onClick={() => toggleMediaDevice("audio")}
         />
         <button
           type="button"
