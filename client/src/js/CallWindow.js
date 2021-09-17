@@ -118,7 +118,7 @@ function CallWindow({
           type="button"
           className={getButtonClass("fa-retweet", video)}
           onClick={() => {
-            const cam = userCamera ? "enviroment" : "user";
+            const cam = userCamera ? "environment" : "user";
             toggleCamera(cam);
             setUserCamera(!userCamera);
           }}
