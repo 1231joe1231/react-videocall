@@ -30,6 +30,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-draggable": "4.4.3",
+    "regenerator-runtime": "0.13.9",
     "sass-loader": "11.1.1",
     "smart-background": "1.0.11",
     "socket.io": "4.1.2",

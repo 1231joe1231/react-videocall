@@ -13,10 +13,10 @@
 		opacity: 1;
 		z-index: auto;
 		
-		.video-control {
-			z-index: auto;
-			@include animation(in-fadeout 3s ease);
-		}
+		// .video-control {
+		// 	z-index: auto;
+		// 	@include animation(in-fadeout 3s ease);
+		// }
 	}
 	
 	.video-control {
@@ -25,14 +25,8 @@
 		height: 72px;
 		width: 100%;
 		text-align: center;
-		opacity: 0;
-		z-index: -1;
+		opacity: 1;
 		@include transition(opacity 0.5s);
-		
-		
-		&:hover {
-			opacity: 1;
-		}
 	}
 	
 	video {

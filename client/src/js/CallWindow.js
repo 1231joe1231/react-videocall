@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Draggable from "react-draggable";
+import "regenerator-runtime/runtime";
 // import { result } from 'lodash';
 
-const getButtonClass = (icon, enabled) =>
-  classnames(`btn-action fa ${icon}`, { disable: !enabled });
+const getButtonClass = (icon, enabled) => classnames(`btn-action fa ${icon}`, { disable: !enabled });
 // const pos = null;
 function CallWindow({
   peerSrc,
@@ -20,6 +20,7 @@ function CallWindow({
   const [video, setVideo] = useState(config.video);
   const [audio, setAudio] = useState(config.audio);
   const [expand, setExpand] = useState(false);
+  const [userCamera, setUserCamera] = useState(true);
 
   useEffect(() => {
     if (peerVideo.current && peerSrc) peerVideo.current.srcObject = peerSrc;
@@ -33,6 +34,31 @@ function CallWindow({
       mediaDevice.toggle("Audio", audio);
     }
   });
+
+  let stream;
+
+  const toggleCamera = async (facingMode) => {
+    const options = {
+      audio: true,
+      video: {
+        facingMode,
+      },
+    };
+
+    try {
+      if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach((track) => track.stop());
+      }
+      stream = await navigator.mediaDevices.getUserMedia(options);
+    } catch (e) {
+      alert(e);
+      return;
+    }
+    localVideo.current.srcObject = null;
+    localVideo.current.srcObject = stream;
+    localVideo.current.play();
+  };
 
   /**
    * Turn on/off a media device
@@ -86,6 +112,16 @@ function CallWindow({
           type="button"
           className={getButtonClass("fa-video-camera", video)}
           onClick={() => toggleMediaDevice("video")}
+        />
+        <button
+          key="btnSwitchCamera"
+          type="button"
+          className={getButtonClass("fa-retweet", video)}
+          onClick={() => {
+            const cam = userCamera ? "enviroment" : "user";
+            toggleCamera(cam);
+            setUserCamera(!userCamera);
+          }}
         />
         <button
           key="btnPIP"
