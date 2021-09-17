@@ -2,7 +2,7 @@ import MediaDevice from './MediaDevice';
 import Emitter from './Emitter';
 import socket from './socket';
 
-const PC_CONFIG = { iceServers: [
+const PC_CONFIG_TURN = { iceServers: [
   {
     urls: ['turn:1.116.123.171:3478?transport=udp', 'turn:1.116.123.171:3478?transport=tcp'],
     username: 'joe',
@@ -12,6 +12,8 @@ const PC_CONFIG = { iceServers: [
   }
 ] };
 
+const PC_CONFIG = { iceServers: [{ urls: ['stun:1.116.123.171:3478'] }] };
+
 class PeerConnection extends Emitter {
   /**
      * Create a PeerConnection.
@@ -19,7 +21,9 @@ class PeerConnection extends Emitter {
      */
   constructor(friendID) {
     super();
-    this.pc = new RTCPeerConnection(PC_CONFIG);
+    const useTurn = localStorage.getItem("USETURN");
+    const config = useTurn ? PC_CONFIG_TURN : PC_CONFIG;
+    this.pc = new RTCPeerConnection(config);
     this.pc.onicecandidate = (event) => socket.emit('call', {
       to: this.friendID,
       candidate: event.candidate

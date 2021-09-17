@@ -5,7 +5,7 @@ import Draggable from 'react-draggable';
 // import { result } from 'lodash';
 
 const getButtonClass = (icon, enabled) => classnames(`btn-action fa ${icon}`, { disable: !enabled });
-let pos = null;
+// const pos = null;
 function CallWindow({
   peerSrc,
   localSrc,
