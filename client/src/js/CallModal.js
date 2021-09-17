@@ -36,7 +36,7 @@ CallModal.propTypes = {
   status: PropTypes.string.isRequired,
   callFrom: PropTypes.string.isRequired,
   startCall: PropTypes.func.isRequired,
-  rejectCall: PropTypes.func.isRequired
+  rejectCall: PropTypes.func.isRequired,
 };
 
 export default CallModal;

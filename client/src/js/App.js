@@ -15,7 +15,7 @@ class App extends Component {
       callModal: '',
       callFrom: '',
       localSrc: null,
-      peerSrc: null
+      peerSrc: null,
     };
     this.pc = {};
     this.config = null;
@@ -71,7 +71,7 @@ class App extends Component {
       callWindow: '',
       callModal: '',
       localSrc: null,
-      peerSrc: null
+      peerSrc: null,
     });
   }
 

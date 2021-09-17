@@ -6,10 +6,10 @@ const PC_CONFIG_TURN = { iceServers: [
   {
     urls: ['turn:1.116.123.171:3478?transport=udp', 'turn:1.116.123.171:3478?transport=tcp'],
     username: 'joe',
-    credential: 'listen'
+    credential: 'listen',
   }, {
-    urls: ['stun:1.116.123.171:3478']
-  }
+    urls: ['stun:1.116.123.171:3478'],
+  },
 ] };
 
 const PC_CONFIG = { iceServers: [{ urls: ['stun:1.116.123.171:3478'] }] };
@@ -26,7 +26,7 @@ class PeerConnection extends Emitter {
     this.pc = new RTCPeerConnection(config);
     this.pc.onicecandidate = (event) => socket.emit('call', {
       to: this.friendID,
-      candidate: event.candidate
+      candidate: event.candidate,
     });
     this.pc.ontrack = (event) => this.emit('peerStream', event.streams[0]);
 

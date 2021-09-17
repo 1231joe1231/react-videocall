@@ -12,7 +12,7 @@ function CallWindow({
   config,
   mediaDevice,
   status,
-  endCall
+  endCall,
 }) {
   const peerVideo = useRef(null);
   const localVideo = useRef(null);
@@ -74,7 +74,7 @@ function CallWindow({
             bottom: 0,
             left: 0,
             width: expand ? '100%' : '20%',
-            height: expand ? '100%' : '20%'
+            height: expand ? '100%' : '20%',
           }}
         />
       </Draggable>
@@ -121,10 +121,10 @@ CallWindow.propTypes = {
   peerSrc: PropTypes.object, // eslint-disable-line
   config: PropTypes.shape({
     audio: PropTypes.bool.isRequired,
-    video: PropTypes.bool.isRequired
+    video: PropTypes.bool.isRequired,
   }).isRequired,
   mediaDevice: PropTypes.object, // eslint-disable-line
-  endCall: PropTypes.func.isRequired
+  endCall: PropTypes.func.isRequired,
 };
 
 export default CallWindow;

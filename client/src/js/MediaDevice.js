@@ -12,9 +12,9 @@ class MediaDevice extends Emitter {
     const constraints = {
       video: {
         facingMode: 'user',
-        height: { min: 360, ideal: 720, max: 1080 }
+        height: { min: 360, ideal: 720, max: 1080 },
       },
-      audio: true
+      audio: true,
     };
 
     navigator.mediaDevices

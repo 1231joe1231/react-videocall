@@ -6,10 +6,10 @@ module.exports = {
   mode: 'development',
   context: __dirname,
   entry: {
-    app: './src/index.js'
+    app: './src/index.js',
   },
   output: {
-    filename: 'js/[name].js'
+    filename: 'js/[name].js',
   },
   module: {
     rules: [
@@ -19,17 +19,17 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-react', '@babel/preset-env']
-          }
-        }
+            presets: ['@babel/preset-react', '@babel/preset-env'],
+          },
+        },
       },
       {
         test: require.resolve('webrtc-adapter'),
-        use: 'expose-loader'
+        use: 'expose-loader',
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
@@ -38,30 +38,30 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'assets'
-            }
-          }
-        ]
-      }
-    ]
+              outputPath: 'assets',
+            },
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: 'React VideoCall - Minh Son Nguyen',
       filename: 'index.html',
-      template: 'src/html/index.html'
-    })
+      template: 'src/html/index.html',
+    }),
   ],
   devServer: {
     compress: true,
     port: 9000,
     proxy: {
-      '/bridge/': `http://localhost:${socketConfig.PORT}`
+      '/bridge/': `http://localhost:${socketConfig.PORT}`,
     },
     watchOptions: {
       aggregateTimeout: 300,
-      poll: 1000
-    }
-  }
+      poll: 1000,
+    },
+  },
 };
