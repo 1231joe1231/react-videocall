@@ -7,8 +7,6 @@ function MainWindow({ startCall, clientId }) {
   const [friendID, setFriendID] = useState(null);
   const [audioInputSelect, setAudioInputSelect] = useState({ value: null });
   const [audioInputList, setAudioInputList] = useState([]);
-  const [audioOutputSelect, setAudioOutputSelect] = useState({ value: null });
-  const [audioOutputList, setAudioOutputList] = useState([]);
   const [videoSelect, setVideoSelect] = useState({ value: null });
   const [videoList, setVideoList] = useState([]);
   const symbols = [
@@ -36,7 +34,7 @@ function MainWindow({ startCall, clientId }) {
    */
   const callWithVideo = (video) => {
     const config = { audio: true, video };
-    if (audioInputSelect && videoSelect && audioOutputSelect) {
+    if (audioInputSelect && videoSelect) {
       config.audioSource = audioInputSelect.value;
       config.videoSource = videoSelect.value;
     }
@@ -55,13 +53,9 @@ function MainWindow({ startCall, clientId }) {
       } else if (deviceInfo.kind === 'videoinput') {
         option.name = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
         setVideoList((prev) => [...prev, option]);
-      } else if (deviceInfo.kind === 'audiooutput') {
-        option.name = deviceInfo.label || `Speaker ${audioOutputSelect.length + 1}`;
-        setAudioOutputList((prev) => [...prev, option]);
       }
     }
     setAudioInputSelect(audioInputList[0]);
-    setAudioOutputSelect(audioOutputList[0]);
     setVideoSelect(videoList[0]);
   };
 
@@ -77,11 +71,6 @@ function MainWindow({ startCall, clientId }) {
   const handleAudioInputSelectChange = (event) => {
     console.log("设置音频输入为", event.target.value);
     setAudioInputSelect(event.target.value);
-  };
-
-  const handleAudioOutputSelectChange = (event) => {
-    console.log("设置音频输出为", event.target.value);
-    setAudioOutputSelect(event.target.value);
   };
 
   const handleVideoSelectChange = (event) => {
@@ -141,11 +130,6 @@ function MainWindow({ startCall, clientId }) {
         <div>
           <select className="select" onChange={handleAudioInputSelectChange} value={audioInputSelect}>
             {audioInputList.map((o) => <option className="select-option" key={o.value} value={o.name}>{o.name}</option>)}
-          </select>
-        </div>
-        <div>
-          <select className="select" onChange={handleAudioOutputSelectChange} value={audioOutputSelect}>
-            {audioOutputList.map((o) => <option className="select-option" key={o.value} value={o.name}>{o.name}</option>)}
           </select>
         </div>
         <div>

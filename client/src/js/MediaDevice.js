@@ -11,10 +11,10 @@ class MediaDevice extends Emitter {
   start(config) {
     const constraints = {
       video: {
-        deviceId: config.videoSource ? { exact: config.videoSource } : undefined,
+        deviceId: config.videoSource,
         // height: { min: 720, ideal: 720, max: 1080 },
       },
-      audio: { deviceId: config.audioSource ? { exact: config.audioSource } : undefined },
+      audio: { deviceId: config.audioSource },
     };
 
     navigator.mediaDevices

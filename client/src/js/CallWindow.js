@@ -155,11 +155,9 @@ function CallWindow({
         />
       </Draggable>
       <div className="video-control">
-        <div>
-          <select className="select" onChange={handleAudioOutputSelectChange}>
-            {audioOutputList.map((o) => <option className="select-option" key={o.value} value={o.value}>{o.name}</option>)}
-          </select>
-        </div>
+        <select className="select" onChange={handleAudioOutputSelectChange}>
+          {audioOutputList.map((o) => <option className="select-option" key={o.value} value={o.value}>{o.name}</option>)}
+        </select>
         <button
           key="btnVideo"
           type="button"
