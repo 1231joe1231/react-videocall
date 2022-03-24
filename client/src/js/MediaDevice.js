@@ -8,13 +8,13 @@ class MediaDevice extends Emitter {
   /**
    * Start media devices and send stream
    */
-  start() {
+  start(config) {
     const constraints = {
       video: {
-        facingMode: 'user',
-        height: { min: 720, ideal: 720, max: 1080 },
+        deviceId: config.videoSource ? { exact: config.videoSource } : undefined,
+        // height: { min: 720, ideal: 720, max: 1080 },
       },
-      audio: true,
+      audio: { deviceId: config.audioSource ? { exact: config.audioSource } : undefined },
     };
 
     navigator.mediaDevices

@@ -38,22 +38,6 @@ function CallWindow({
 
   let stream;
 
-  // const gotDevices = (deviceInfos) => {
-  //   window.deviceInfos = deviceInfos; // make available to console
-  //   console.log('Available input and output devices:', deviceInfos);
-  //   for (const deviceInfo of deviceInfos) {
-  //     const option = document.createElement('option');
-  //     option.value = deviceInfo.deviceId;
-  //     if (deviceInfo.kind === 'audioinput') {
-  //       option.text = deviceInfo.label || `Microphone ${audioSelect.length + 1}`;
-  //       audioSelect.appendChild(option);
-  //     } else if (deviceInfo.kind === 'videoinput') {
-  //       option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
-  //       videoSelect.appendChild(option);
-  //     }
-  //   }
-  // };
-
   const toggleCamera = async (facingMode) => {
     const options = {
       audio: true,

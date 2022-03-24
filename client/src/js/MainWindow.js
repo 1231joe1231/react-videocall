@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+/* eslint-disable no-restricted-syntax */
+import React, { useState, useEffect } from "react";
 import Background from "smart-background";
 import PropTypes from "prop-types";
 
 function MainWindow({ startCall, clientId }) {
   const [friendID, setFriendID] = useState(null);
+  const [audioInputSelect, setAudioInputSelect] = useState({ value: null });
+  const [audioInputList, setAudioInputList] = useState([]);
+  const [audioOutputSelect, setAudioOutputSelect] = useState({ value: null });
+  const [audioOutputList, setAudioOutputList] = useState([]);
+  const [videoSelect, setVideoSelect] = useState({ value: null });
+  const [videoList, setVideoList] = useState([]);
   const symbols = [
     "乾",
     "坤",
@@ -29,7 +36,36 @@ function MainWindow({ startCall, clientId }) {
    */
   const callWithVideo = (video) => {
     const config = { audio: true, video };
+    if (audioInputSelect && videoSelect) {
+      config.audioSource = audioInputSelect.value;
+      config.videoSource = videoSelect.value;
+    }
     return () => friendID && startCall(true, friendID, config);
+  };
+
+  const gotDevices = (deviceInfos) => {
+    window.deviceInfos = deviceInfos; // make available to console
+    console.log('Available input and output devices:', deviceInfos);
+    for (const deviceInfo of deviceInfos) {
+      const option = {};
+      option.value = deviceInfo.deviceId;
+      if (deviceInfo.kind === 'audioinput') {
+        option.name = deviceInfo.label || `Microphone ${audioInputSelect.length + 1}`;
+        setAudioInputList((prev) => [...prev, option]);
+      } else if (deviceInfo.kind === 'videoinput') {
+        option.name = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
+        setVideoList((prev) => [...prev, option]);
+      } else if (deviceInfo.kind === 'audiooutput') {
+        option.name = deviceInfo.label || `Camera ${audioOutputSelect.length + 1}`;
+        setAudioOutputList((prev) => [...prev, option]);
+      }
+    }
+    setAudioInputSelect(audioInputList[0]);
+    setVideoSelect(videoList[0]);
+  };
+
+  const handleError = (error) => {
+    console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
   };
 
   const handleChange = (event) => {
@@ -37,9 +73,25 @@ function MainWindow({ startCall, clientId }) {
     localStorage.setItem("USETURN", event.target.checked);
   };
 
-  // useEffect(() => {
-  //   localStorage.setItem("USETURN", false);
-  // });
+  const handleAudioInputSelectChange = (event) => {
+    console.log("设置音频输入为", event.target.value);
+    setAudioInputSelect(event.target.value);
+  };
+
+  const handleAudioOutputSelectChange = (event) => {
+    console.log("设置音频输出为", event.target.value);
+    setAudioInputSelect(event.target.value);
+  };
+
+  const handleVideoSelectChange = (event) => {
+    console.log("设置视频输入为", event.target.value);
+    setVideoSelect(event.target.value);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("USETURN", false);
+    navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+  }, []);
 
   return (
     <Background
@@ -56,6 +108,7 @@ function MainWindow({ startCall, clientId }) {
           <h3>
             Hi, your ID is
             <input
+              style={{ marginLeft: 10 }}
               type="text"
               className="txt-clientId"
               defaultValue={clientId}
@@ -83,6 +136,21 @@ function MainWindow({ startCall, clientId }) {
             name="name"
             onChange={handleChange}
           />
+        </div>
+        <div>
+          <select className="select" onChange={handleAudioInputSelectChange} value={audioInputSelect}>
+            {audioInputList.map((o) => <option className="select-option" key={o.value} value={o.name}>{o.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <select className="select" onChange={handleAudioOutputSelectChange} value={audioOutputSelect}>
+            {audioOutputList.map((o) => <option className="select-option" key={o.value} value={o.name}>{o.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <select className="select" onChange={handleVideoSelectChange} value={videoSelect}>
+            {videoList.map((o) => <option className="select-option" key={o.value} value={o.name}>{o.name}</option>)}
+          </select>
         </div>
         <div>
           <input
