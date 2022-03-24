@@ -22,6 +22,7 @@ function CallWindow({
   const [audio, setAudio] = useState(config.audio);
   const [expand, setExpand] = useState(false);
   const [userCamera, setUserCamera] = useState(true);
+  const [audioOutputList, setAudioOutputList] = useState([]);
 
   useEffect(() => {
     if (peerVideo.current && peerSrc) peerVideo.current.srcObject = peerSrc;
@@ -37,6 +38,52 @@ function CallWindow({
   });
 
   let stream;
+
+  const gotDevices = (deviceInfos) => {
+    window.deviceInfos = deviceInfos; // make available to console
+    console.log('Available input and output devices:', deviceInfos);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const deviceInfo of deviceInfos) {
+      const option = {};
+      option.value = deviceInfo.deviceId;
+      if (deviceInfo.kind === 'audiooutput') {
+        option.name = deviceInfo.label;
+        setAudioOutputList((prev) => [...prev, option]);
+      }
+    }
+  };
+
+  const handleError = (error) => {
+    console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
+  };
+
+  useEffect(() => {
+    navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+  }, []);
+
+  function attachSinkId(sinkId) {
+    if (typeof peerVideo.current.sinkId !== 'undefined') {
+      peerVideo.current.setSinkId(sinkId)
+        .then(() => {
+          console.log(`Success, audio output device attached: ${sinkId}`);
+        })
+        .catch((error) => {
+          let errorMessage = error;
+          if (error.name === 'SecurityError') {
+            errorMessage = `You need to use HTTPS for selecting audio output device: ${error}`;
+          }
+          console.error(errorMessage);
+        });
+    } else {
+      console.warn('Browser does not support output device selection.');
+    }
+  }
+
+  const handleAudioOutputSelectChange = (event) => {
+    console.log("设置音频输出为", event.target.value);
+    // setAudioOutputSelect(event.target.value);
+    attachSinkId(event.target.value);
+  };
 
   const toggleCamera = async (facingMode) => {
     const options = {
@@ -108,6 +155,11 @@ function CallWindow({
         />
       </Draggable>
       <div className="video-control">
+        <div>
+          <select className="select" onChange={handleAudioOutputSelectChange}>
+            {audioOutputList.map((o) => <option className="select-option" key={o.value} value={o.value}>{o.name}</option>)}
+          </select>
+        </div>
         <button
           key="btnVideo"
           type="button"
@@ -161,6 +213,7 @@ CallWindow.propTypes = {
   config: PropTypes.shape({
     audio: PropTypes.bool.isRequired,
     video: PropTypes.bool.isRequired,
+    audioOutputSource: PropTypes.string,
   }).isRequired,
   mediaDevice: PropTypes.object, // eslint-disable-line
   endCall: PropTypes.func.isRequired,

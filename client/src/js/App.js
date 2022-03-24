@@ -76,7 +76,8 @@ class App extends Component {
   }
 
   render() {
-    const { clientId, callFrom, callModal, callWindow, localSrc, peerSrc } = this.state;
+    const { clientId, callFrom, callModal, callWindow,
+      localSrc, peerSrc, audioOutput } = this.state;
     return (
       <div>
         <MainWindow
@@ -91,8 +92,9 @@ class App extends Component {
             config={this.config}
             mediaDevice={this.pc.mediaDevice}
             endCall={this.endCallHandler}
+            audioOutput={audioOutput}
           />
-        ) }
+        )}
         <CallModal
           status={callModal}
           startCall={this.startCallHandler}

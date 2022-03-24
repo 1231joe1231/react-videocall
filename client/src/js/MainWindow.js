@@ -36,7 +36,7 @@ function MainWindow({ startCall, clientId }) {
    */
   const callWithVideo = (video) => {
     const config = { audio: true, video };
-    if (audioInputSelect && videoSelect) {
+    if (audioInputSelect && videoSelect && audioOutputSelect) {
       config.audioSource = audioInputSelect.value;
       config.videoSource = videoSelect.value;
     }
@@ -56,11 +56,12 @@ function MainWindow({ startCall, clientId }) {
         option.name = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
         setVideoList((prev) => [...prev, option]);
       } else if (deviceInfo.kind === 'audiooutput') {
-        option.name = deviceInfo.label || `Camera ${audioOutputSelect.length + 1}`;
+        option.name = deviceInfo.label || `Speaker ${audioOutputSelect.length + 1}`;
         setAudioOutputList((prev) => [...prev, option]);
       }
     }
     setAudioInputSelect(audioInputList[0]);
+    setAudioOutputSelect(audioOutputList[0]);
     setVideoSelect(videoList[0]);
   };
 
@@ -80,7 +81,7 @@ function MainWindow({ startCall, clientId }) {
 
   const handleAudioOutputSelectChange = (event) => {
     console.log("设置音频输出为", event.target.value);
-    setAudioInputSelect(event.target.value);
+    setAudioOutputSelect(event.target.value);
   };
 
   const handleVideoSelectChange = (event) => {
